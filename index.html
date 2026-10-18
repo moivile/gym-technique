@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Махи и тяги</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one column of exercise sections; each has two figures (pose + muscle map), stacked on phones, cues below. */
+:root {
+  --bg: #f3f4f6; --surface: #ffffff; --ink: #1b2330; --muted: #5d6675; --line: #d9dde3;
+  --skin: #dfe4eb; --outline: #5f6b7c; --map-base: #cfd5de; --map-line: #9aa4b2;
+  --good: #23824f; --good-soft: #e3f3ea; --bad: #c2412f; --bad-soft: #fbe7e3;
+  --warn: #a86a00; --warn-soft: #fbf0d9; --accent: #3b5ccc; --mach: #b9c0ca;
+  --display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --ink: #e8ebf0; --muted: #9aa3b2; --line: #2c3440;
+    --skin: #3a4352; --outline: #9aa6b8; --map-base: #353e4c; --map-line: #59657a;
+    --good: #4cc286; --good-soft: #17301f; --bad: #ef7663; --bad-soft: #36201c;
+    --warn: #e3b25a; --warn-soft: #33290f; --accent: #8ea6ff; --mach: #4a5462; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --ink: #e8ebf0; --muted: #9aa3b2; --line: #2c3440;
+  --skin: #3a4352; --outline: #9aa6b8; --map-base: #353e4c; --map-line: #59657a;
+  --good: #4cc286; --good-soft: #17301f; --bad: #ef7663; --bad-soft: #36201c;
+  --warn: #e3b25a; --warn-soft: #33290f; --accent: #8ea6ff; --mach: #4a5462; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.wrap { max-width: 940px; margin: 0 auto; display: grid; gap: 36px; }
+header { display: grid; gap: 10px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 5vw, 38px); line-height: 1.15; margin: 0; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); max-width: 66ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 18px; scroll-margin-top: 16px; }
+.head { display: grid; gap: 4px; }
+.where { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+h2 { font-family: var(--display); font-weight: 500; font-size: clamp(20px, 3.6vw, 26px); margin: 0; text-wrap: balance; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 680px) { .pair { grid-template-columns: 1fr; } }
+figure { margin: 0; border-radius: 10px; padding: 12px 12px 14px; display: grid; gap: 8px; min-width: 0; }
+figure.good { background: var(--good-soft); }
+figure.bad { background: var(--bad-soft); }
+figure.warn { background: var(--warn-soft); }
+.tag { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.good .tag { color: var(--good); } .bad .tag { color: var(--bad); } .warn .tag { color: var(--warn); }
+.dot { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; color: var(--surface); font-size: 14px; font-weight: 700; flex: none; }
+.good .dot { background: var(--good); } .bad .dot { background: var(--bad); } .warn .dot { background: var(--warn); }
+.art { display: grid; grid-template-columns: 1fr 78px; gap: 8px; align-items: center; }
+.art .maps { display: grid; gap: 4px; justify-items: center; }
+.maplbl { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.2; }
+svg { width: 100%; height: auto; display: block; max-width: 100%; }
+figcaption { font-size: 15px; }
+.works { font-size: 14px; display: grid; gap: 2px; }
+.works b { font-weight: 600; }
+.cues { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.cue { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.cue h3 { margin: 0; font-size: 13px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.cue p, .cue ul { margin: 0; }
+.cue ul { padding-left: 18px; display: grid; gap: 4px; }
+.card { font-size: 15px; background: var(--bg); border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; }
+.card b { font-weight: 600; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 15px; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+footer { font-size: 13px; color: var(--muted); }
+/* drawing */
+.o { stroke: var(--outline); stroke-linecap: round; fill: none; }
+.s { stroke: var(--skin); stroke-linecap: round; fill: none; }
+.poly { fill: var(--skin); stroke: var(--outline); stroke-width: 2.2; stroke-linejoin: round; }
+.hl-good { fill: var(--good); stroke: none; opacity: .9; }
+.hl-bad { fill: var(--bad); stroke: none; opacity: .9; }
+.hl-warn { fill: var(--warn); stroke: none; opacity: .9; }
+.hl-dim { fill: var(--muted); stroke: none; opacity: .28; }
+.hs-good { stroke: var(--good); stroke-linecap: round; fill: none; opacity: .9; }
+.hs-bad { stroke: var(--bad); stroke-linecap: round; fill: none; opacity: .9; }
+.hs-warn { stroke: var(--warn); stroke-linecap: round; fill: none; opacity: .9; }
+.mach { fill: var(--mach); stroke: var(--outline); stroke-width: 1.2; }
+.weight { fill: var(--outline); }
+.cable { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 5 4; fill: none; }
+.guide { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 4; fill: none; }
+.arr-g { stroke: var(--good); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.arr-b { stroke: var(--bad); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.arr-w { stroke: var(--warn); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ghost { stroke: var(--muted); stroke-width: 10; stroke-dasharray: 2 9; stroke-linecap: round; fill: none; opacity: .7; }
+.lbl { font-family: var(--body); font-size: 12px; fill: var(--muted); }
+.lbl-g { font-family: var(--body); font-size: 13px; font-weight: 600; fill: var(--good); }
+.lbl-b { font-family: var(--body); font-size: 13px; font-weight: 600; fill: var(--bad); }
+.lbl-w { font-family: var(--body); font-size: 13px; font-weight: 600; fill: var(--warn); }
+.pause { fill: var(--good); } .pause-t { font: 600 13px var(--body); fill: var(--surface); }
+.m-base { fill: var(--map-base); stroke: var(--map-line); stroke-width: .5; }
+.m-good { fill: var(--good); } .m-bad { fill: var(--bad); } .m-warn { fill: var(--warn); }
+.m-head { fill: var(--map-line); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Махи и тяги: как правильно</h1>
+    <p class="lede">Четыре подсказки из разбора техники школы Селуянова. Слева правильно, справа типичная ошибка. Цветом показано, какая мышца реально делает работу: на фигуре и на карте мышц рядом.</p>
+    <div class="legend">
+      <span><i class="sw" style="background: var(--good)"></i>работает нужная мышца</span>
+      <span><i class="sw" style="background: var(--bad)"></i>работу перехватывает другая</span>
+      <span><i class="sw" style="background: var(--warn)"></i>работают соседние мышцы</span>
+    </div>
+  </header>
+
+  <section id="lat" aria-labelledby="h-lat">
+    <div class="head"><span class="where">Дни 2 и 6 · махи гантелями</span><h2 id="h-lat">Махи в стороны: плечи не поднимать</h2></div>
+    <div class="pair">
+      <figure class="good">
+        <span class="tag"><span class="dot">✓</span>Правильно</span>
+        <div class="art">
+          <svg viewBox="0 0 240 240" role="img" aria-label="Вид спереди: плечи опущены, руки на уровне плеч, работают дельты">
+            <line class="guide" x1="4" y1="88" x2="236" y2="88"/><text class="lbl" x="6" y="82">уровень плеч</text>
+            <g data-limbs="108 172 104 230 19; 132 172 136 230 19; 120 62 120 82 13; 88 88 54 93 15; 54 93 24 99 11; 152 88 186 93 15; 186 93 216 99 11"></g>
+            <polygon class="poly" points="84,84 156,84 148,122 140,160 142,176 98,176 100,160 92,122"/>
+            <path class="hl-dim" d="M106,70 Q96,74 86,84 L100,84 Z M134,70 Q144,74 154,84 L140,84 Z"/>
+            <ellipse class="hl-good" cx="87" cy="88" rx="12" ry="10"/><ellipse class="hl-good" cx="153" cy="88" rx="12" ry="10"/>
+            <ellipse class="poly" cx="120" cy="45" rx="15" ry="18"/>
+            <rect class="weight" x="10" y="92" width="22" height="14" rx="4"/><rect class="weight" x="208" y="92" width="22" height="14" rx="4"/>
+            <path class="arr-g" d="M70,52 L70,72 M64,65 L70,73 L76,65"/><path class="arr-g" d="M170,52 L170,72 M164,65 L170,73 L176,65"/>
+            <text class="lbl-g" x="120" y="138" text-anchor="middle">шея длинная</text>
+          </svg>
+          <div class="maps"><svg data-map="back" data-good="BACK_DELTOIDS" data-dim="TRAPEZIUS" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечены дельты"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Плечи опущены, до ушей далеко. Руки поднимаются до уровня плеч и не выше.</figcaption>
+        <div class="works"><span><b>Работает:</b> дельтовидная мышца, в основном средний пучок.</span></div>
+      </figure>
+      <figure class="bad">
+        <span class="tag"><span class="dot">✕</span>Ошибка</span>
+        <div class="art">
+          <svg viewBox="0 0 240 240" role="img" aria-label="Вид спереди: плечи подняты к ушам, руки выше плеч, работает трапеция">
+            <line class="guide" x1="4" y1="88" x2="236" y2="88"/>
+            <g data-limbs="108 172 104 230 19; 132 172 136 230 19; 120 60 120 70 13; 92 74 60 64 15; 60 64 32 52 11; 148 74 180 64 15; 180 64 208 52 11"></g>
+            <polygon class="poly" points="88,72 152,72 148,122 140,160 142,176 98,176 100,160 92,122"/>
+            <path class="hl-bad" d="M108,58 Q96,62 86,74 L100,76 L120,66 L140,76 L154,74 Q144,62 132,58 Z"/>
+            <ellipse class="hl-dim" cx="90" cy="76" rx="11" ry="9"/><ellipse class="hl-dim" cx="150" cy="76" rx="11" ry="9"/>
+            <ellipse class="poly" cx="120" cy="42" rx="15" ry="18"/>
+            <rect class="weight" x="20" y="44" width="22" height="14" rx="4"/><rect class="weight" x="198" y="44" width="22" height="14" rx="4"/>
+            <path class="arr-b" d="M70,96 L70,80 M64,87 L70,79 L76,87"/><path class="arr-b" d="M170,96 L170,80 M164,87 L170,79 L176,87"/>
+            <text class="lbl-b" x="120" y="138" text-anchor="middle">плечи у ушей</text>
+          </svg>
+          <div class="maps"><svg data-map="back" data-bad="TRAPEZIUS" data-dim="BACK_DELTOIDS" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечена трапеция"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Плечи подтянуты к ушам, руки взлетают выше плеч.</figcaption>
+        <div class="works"><span><b>Работает:</b> трапеция поднимает плечи, дельте достаётся меньше.</span></div>
+      </figure>
+    </div>
+    <div class="cues">
+      <div class="cue"><h3>Как делать</h3><ul><li>Сведи и опусти лопатки до первого повтора и держи так весь подход.</li><li>Поднимай до 80–90°, вверху короткая фиксация.</li><li>Вниз медленно, руки не бросать.</li></ul></div>
+      <div class="cue"><h3>Как проверить себя</h3><p>Смотри в зеркало на шею: она не должна «укорачиваться». Если плечи ползут вверх или руки не задерживаются наверху, вес тяжеловат.</p></div>
+      <div class="cue"><h3>Строка в карточке</h3><p class="card"><b>Техника:</b> свести и опустить лопатки, плечи не поднимать, руки до 80–90°</p></div>
+    </div>
+    <div class="links"><a href="https://boxlifemagazine.com/common-lateral-raise-mistakes-and-fixes/" target="_blank" rel="noopener">Ошибки в махах с разбором (англ.)</a><a href="https://prosportlab.com/works/strength-training/ch23" target="_blank" rel="noopener">Статья «Отведение плеча», ПРОСПОРТЛАБ</a></div>
+  </section>
+
+  <section id="row" aria-labelledby="h-row">
+    <div class="head"><span class="where">День 2 · тяга сидя, HD-2300 Mid-Row</span><h2 id="h-row">Тяга сидя: кисть не выше локтя</h2></div>
+    <div class="pair">
+      <figure class="good">
+        <span class="tag"><span class="dot">✓</span>Правильно</span>
+        <div class="art">
+          <svg viewBox="0 0 260 210" role="img" aria-label="Вид сбоку: локоть уходит назад, предплечье горизонтально, работают широчайшие">
+            <rect class="mach" x="148" y="152" width="80" height="10" rx="3"/><rect class="mach" x="6" y="96" width="14" height="28" rx="3"/>
+            <line class="cable" x1="20" y1="110" x2="150" y2="110"/>
+            <g data-limbs="176 146 128 150 19; 128 150 116 194 14; 168 72 169 86 11"></g>
+            <polygon class="poly" points="156,84 180,82 188,146 162,150 158,118"/>
+            <path class="hl-good" d="M176,92 L187,98 L186,138 L172,128 Z"/>
+            <g data-limbs="172 92 206 110 14; 206 110 156 110 10"></g>
+            <ellipse class="poly" cx="165" cy="62" rx="14" ry="16"/>
+            <rect class="weight" x="146" y="102" width="10" height="16" rx="3"/>
+            <line class="guide" x1="138" y1="126" x2="222" y2="126"/>
+            <path class="arr-g" d="M152,119 L152,126 M206,119 L206,126"/>
+            <text class="lbl-g" x="180" y="142" text-anchor="middle">кисть = локоть</text>
+            <path class="arr-g" d="M210,96 L230,96 M223,90 L231,96 L223,102"/><text class="lbl" x="220" y="86" text-anchor="middle">локоть назад</text>
+          </svg>
+          <div class="maps"><svg data-map="back" data-good="UPPER_BACK" data-dim="BACK_DELTOIDS" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечена спина"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Тянешь локтем назад вдоль корпуса. Предплечье горизонтально, кисть на высоте локтя, как продолжение троса.</figcaption>
+        <div class="works"><span><b>Работает:</b> широчайшие и середина спины.</span></div>
+      </figure>
+      <figure class="bad">
+        <span class="tag"><span class="dot">✕</span>Ошибка</span>
+        <div class="art">
+          <svg viewBox="0 0 260 210" role="img" aria-label="Вид сбоку: кисть выше локтя, рука сгибается, работает бицепс">
+            <rect class="mach" x="148" y="152" width="80" height="10" rx="3"/><rect class="mach" x="6" y="96" width="14" height="28" rx="3"/>
+            <line class="cable" x1="20" y1="110" x2="152" y2="90"/>
+            <g data-limbs="176 146 128 150 19; 128 150 116 194 14; 168 72 169 86 11"></g>
+            <polygon class="poly" points="156,84 180,82 188,146 162,150 158,118"/>
+            <path class="hl-dim" d="M176,92 L187,98 L186,138 L172,128 Z"/>
+            <g data-limbs="172 92 194 126 14; 194 126 158 92 10"></g>
+            <line class="hs-bad" x1="176" y1="99" x2="189" y2="119" stroke-width="9"/>
+            <ellipse class="poly" cx="165" cy="62" rx="14" ry="16"/>
+            <rect class="weight" x="148" y="82" width="10" height="16" rx="3"/>
+            <line class="guide" x1="138" y1="126" x2="222" y2="126"/>
+            <path class="arr-b" d="M152,98 L152,124 M148,105 L152,97 L156,105"/>
+            <text class="lbl-b" x="188" y="146" text-anchor="middle">кисть выше локтя</text>
+          </svg>
+          <div class="maps"><svg data-map="front" data-bad="BICEPS" viewBox="0 0 100 200" aria-label="Карта мышц спереди: подсвечен бицепс"></svg><span class="maplbl">вид спереди</span></div>
+        </div>
+        <figcaption>Локоть остаётся внизу, кисть задирается к груди. Получается сгибание на бицепс.</figcaption>
+        <div class="works"><span><b>Работает:</b> бицепс, спине достаётся меньше.</span></div>
+      </figure>
+    </div>
+    <div class="cues">
+      <div class="cue"><h3>Как делать</h3><ul><li>Сначала сведи лопатки, потом тяни руками.</li><li>Думай «тяну локтем», а не «тяну кистью».</li><li>Локти вдоль корпуса, в конце короткое сжатие.</li></ul></div>
+      <div class="cue"><h3>Как проверить себя</h3><p>В конечной точке посмотри на руку сбоку: предплечье идёт по линии троса, почти горизонтально. Кисть заметно выше локтя — бицепс перехватывает работу.</p></div>
+      <div class="cue"><h3>Строка в карточке</h3><p class="card"><b>Техника:</b> сначала сведи лопатки, кисть не выше локтя</p></div>
+    </div>
+    <div class="links"><a href="https://bodybuilding.com/content/6-cable-row-blunders.html" target="_blank" rel="noopener">6 ошибок в тяге сидя (англ., с фото)</a><a href="https://www.garagegymreviews.com/how-to-do-a-seated-cable-row" target="_blank" rel="noopener">Как делать тягу сидя (англ.)</a><a href="https://prosportlab.com/works/strength-training/ch24" target="_blank" rel="noopener">Статья «Горизонтальная тяга», ПРОСПОРТЛАБ</a></div>
+  </section>
+
+  <section id="pd" aria-labelledby="h-pd">
+    <div class="head"><span class="where">Дни 2 и 5 · pulldown, оба хвата</span><h2 id="h-pd">Pulldown: к верху груди, внизу пауза</h2></div>
+    <div class="pair">
+      <figure class="good">
+        <span class="tag"><span class="dot">✓</span>Правильно</span>
+        <div class="art">
+          <svg viewBox="0 0 240 250" role="img" aria-label="Вид сбоку: корпус почти вертикален, рукоять у верха груди, работают широчайшие">
+            <circle class="mach" cx="112" cy="14" r="8"/><rect class="mach" x="50" y="172" width="70" height="10" rx="3"/><rect class="mach" x="106" y="146" width="36" height="10" rx="4"/>
+            <line class="cable" x1="112" y1="22" x2="104" y2="98"/>
+            <g data-limbs="86 164 136 164 19; 136 164 142 218 14; 80 84 82 96 11"></g>
+            <polygon class="poly" points="68,96 92,98 96,166 74,168 72,130"/>
+            <path class="hl-good" d="M70,106 L82,110 L86,146 L74,140 Z"/>
+            <g data-limbs="78 102 66 134 14; 66 134 102 104 10"></g>
+            <ellipse class="poly" cx="80" cy="70" rx="14" ry="16"/>
+            <rect class="weight" x="96" y="96" width="16" height="10" rx="3"/>
+            <line class="guide" x1="114" y1="101" x2="148" y2="101"/><text class="lbl-g" x="152" y="105">верх груди</text>
+            <rect class="pause" x="152" y="114" width="40" height="22" rx="11"/><text class="pause-t" x="172" y="129" text-anchor="middle">1 с</text>
+          </svg>
+          <div class="maps"><svg data-map="back" data-good="UPPER_BACK" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечены широчайшие"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Корпус почти вертикально, грудь вперёд. Рукоять приходит к верху груди, локти уходят вниз. Внизу пауза на секунду.</figcaption>
+        <div class="works"><span><b>Работает:</b> широчайшие.</span></div>
+      </figure>
+      <figure class="bad">
+        <span class="tag"><span class="dot">✕</span>Ошибка</span>
+        <div class="art">
+          <svg viewBox="0 0 240 250" role="img" aria-label="Вид сбоку: корпус завален назад, рукоять дёргают к животу, работает поясница и инерция">
+            <circle class="mach" cx="112" cy="14" r="8"/><rect class="mach" x="50" y="172" width="70" height="10" rx="3"/><rect class="mach" x="106" y="146" width="36" height="10" rx="4"/>
+            <line class="cable" x1="112" y1="22" x2="84" y2="138"/>
+            <g data-limbs="86 164 136 164 19; 136 164 142 218 14; 36 96 42 106 11"></g>
+            <polygon class="poly" points="32,112 52,100 96,162 76,172"/>
+            <path class="hl-bad" d="M62,138 L78,128 L92,154 L78,166 Z"/>
+            <path class="hl-dim" d="M44,112 L54,108 L68,132 L58,136 Z"/>
+            <g data-limbs="44 112 50 150 14; 50 150 84 140 10"></g>
+            <ellipse class="poly" cx="30" cy="86" rx="14" ry="16"/>
+            <rect class="weight" x="78" y="134" width="16" height="10" rx="3"/>
+            <path class="arr-b" d="M70,66 Q46,70 38,98 M35,88 L38,99 L46,93"/>
+            <text class="lbl-b" x="148" y="104">рывок назад,</text><text class="lbl-b" x="148" y="120">к животу</text>
+          </svg>
+          <div class="maps"><svg data-map="back" data-bad="LOWER_BACK" data-dim="UPPER_BACK" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечена поясница"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Корпус заваливается назад, рукоять дёргают к животу. Вес идёт за счёт раскачки.</figcaption>
+        <div class="works"><span><b>Работает:</b> поясница и инерция, широчайшим достаётся меньше.</span></div>
+      </figure>
+    </div>
+    <div class="cues">
+      <div class="cue"><h3>Как делать</h3><ul><li>Грудь вперёд и вверх, поясница неподвижна.</li><li>Тяни к верху груди, локти вниз и чуть назад.</li><li>Внизу пауза 1 с со сведёнными лопатками, вверх медленно.</li></ul></div>
+      <div class="cue"><h3>Почему меняется подсказка</h3><p>Старая строка «после 15 повторов запас кажется меньше, чем есть» писалась под 16–20 повторов без штыря. Сейчас коридор 13–16 с блином, и она больше не нужна.</p></div>
+      <div class="cue"><h3>Строка в карточке</h3><p class="card"><b>Техника:</b> тяни к верху груди, внизу пауза 1 с</p></div>
+    </div>
+    <div class="links"><a href="https://liftosaur.com/exercises/cable-lat-pulldown" target="_blank" rel="noopener">Pulldown в Liftosaur (с анимацией)</a><a href="https://www.topendsports.com/fitness/technique/lat-pulldown.htm" target="_blank" rel="noopener">Техника pulldown (англ.)</a><a href="https://www.mymlc.com/health-information/videos/lifestyle/fitness/strength-training/weight-machine-exercises/video-lat-pull-down-with-weight-machine/" target="_blank" rel="noopener">Видео Mayo Clinic</a><a href="https://prosportlab.com/works/strength-training/ch25" target="_blank" rel="noopener">Статья «Вертикальная тяга», ПРОСПОРТЛАБ</a></div>
+  </section>
+
+  <section id="hyp" aria-labelledby="h-hyp">
+    <div class="head"><span class="where">День 6 · гиперэкстензия, римский стул 45°</span><h2 id="h-hyp">Гиперэкстензия: где стоит валик</h2></div>
+    <p class="lede">Гребень таза — верхний край тазовой кости. Поставь руки в боки: пальцы упрутся в него. Где край валика относительно этой кости, там и сгибается тело.</p>
+    <div class="pair">
+      <figure class="warn">
+        <span class="tag"><span class="dot">!</span>Валик ниже гребня</span>
+        <div class="art">
+          <svg viewBox="0 0 260 240" role="img" aria-label="Римский стул: валик под бёдрами, сгиб в тазу, работают ягодицы и бицепс бедра">
+            <line class="o" x1="96" y1="228" x2="240" y2="228" stroke-width="3"/>
+            <rect class="mach" x="200" y="206" width="30" height="8" rx="2" transform="rotate(45 215 210)"/>
+            <line class="o" x1="150" y1="160" x2="160" y2="228" stroke-width="3"/>
+            <line class="ghost" x1="140" y1="130" x2="132" y2="196"/>
+            <g data-limbs="215 205 140 130 20; 86 76 78 68 10"></g>
+            <line class="hs-warn" x1="150" y1="140" x2="190" y2="180" stroke-width="12"/>
+            <polygon class="poly" points="147,123 133,137 81,85 95,71"/>
+            <circle class="hl-warn" cx="140" cy="131" r="10"/>
+            <polygon class="hl-dim" points="140,119 129,131 108,110 120,98"/>
+            <ellipse class="poly" cx="72" cy="64" rx="13" ry="15" transform="rotate(-45 72 64)"/>
+            <rect x="130" y="149" width="36" height="12" rx="6" fill="var(--accent)" transform="rotate(45 148 155)"/>
+            <path class="arr-w" d="M114,104 A36,36 0 0 0 134,166 M126,160 L134,167 L136,157"/>
+            <text class="lbl-w" x="10" y="140">сгиб в тазу</text><text class="lbl" x="10" y="158">спина прямая</text>
+            <text class="lbl" x="164" y="118">гребень таза</text><line class="guide" x1="146" y1="128" x2="162" y2="118"/>
+          </svg>
+          <div class="maps"><svg data-map="back" data-warn="GLUTEAL,HAMSTRING" data-dim="LOWER_BACK" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечены ягодицы и задняя поверхность бедра"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Таз свободен, тело складывается в тазобедренном суставе.</figcaption>
+        <div class="works"><span><b>Двигают:</b> ягодицы и задняя поверхность бедра.</span><span><b>Держит:</b> поясница — работает статически, это тоже стимул.</span></div>
+      </figure>
+      <figure class="good">
+        <span class="tag"><span class="dot">✓</span>Валик выше гребня</span>
+        <div class="art">
+          <svg viewBox="0 0 260 240" role="img" aria-label="Римский стул: валик на уровне живота, сгиб в пояснице, работают разгибатели спины">
+            <line class="o" x1="96" y1="228" x2="240" y2="228" stroke-width="3"/>
+            <rect class="mach" x="200" y="206" width="30" height="8" rx="2" transform="rotate(45 215 210)"/>
+            <line class="o" x1="122" y1="134" x2="150" y2="228" stroke-width="3"/>
+            <path class="ghost" d="M128,118 Q104,132 110,192"/>
+            <g data-limbs="215 205 140 130 20; 86 76 78 68 10"></g>
+            <polygon class="poly" points="147,123 133,137 81,85 95,71"/>
+            <polygon class="hl-good" points="140,119 129,131 108,110 120,98"/>
+            <ellipse class="poly" cx="72" cy="64" rx="13" ry="15" transform="rotate(-45 72 64)"/>
+            <rect x="102" y="121" width="36" height="12" rx="6" fill="var(--accent)" transform="rotate(45 120 127)"/>
+            <path class="arr-g" d="M102,94 A32,32 0 0 0 106,150 M98,144 L106,151 L110,142"/>
+            <text class="lbl-g" x="10" y="140">сгиб в пояснице</text><text class="lbl" x="10" y="158">таз зажат валиком</text>
+            <text class="lbl" x="170" y="152">гребень таза</text><line class="guide" x1="146" y1="140" x2="168" y2="148"/>
+          </svg>
+          <div class="maps"><svg data-map="back" data-good="LOWER_BACK" viewBox="0 0 100 200" aria-label="Карта мышц сзади: подсвечена поясница"></svg><span class="maplbl">вид сзади</span></div>
+        </div>
+        <figcaption>Таз зажат, движение идёт в пояснице.</figcaption>
+        <div class="works"><span><b>Двигают:</b> разгибатели спины — ради них гиперэкстензия стоит в программе.</span></div>
+      </figure>
+    </div>
+    <div class="cues">
+      <div class="cue"><h3>Насколько это важно</h3><p>Меньше, чем кажется. При низком валике поясница тоже работает: держит спину прямой против корпуса и гантели. Разница в том, двигается поясница или только держит.</p></div>
+      <div class="cue"><h3>Если поднимать валик</h3><ul><li>Начни легче, чем 36 кг: поясница станет главной мышцей.</li><li>Вверху до прямой линии «ноги — корпус», не переразгибаться.</li><li>Вниз медленно, боль в пояснице — сразу стоп.</li></ul></div>
+      <div class="cue"><h3>Что сделать в зале</h3><p>Поставь руки в боки, найди край тазовой кости и посмотри, где край валика: выше или ниже. Напиши, решим, менять ли.</p></div>
+    </div>
+    <div class="links"><a href="https://prosportlab.com/works/strength-training/ch33" target="_blank" rel="noopener">Статья «Гиперэкстензия», ПРОСПОРТЛАБ</a></div>
+  </section>
+
+  <footer>Карта мышц — по данным открытой библиотеки react-body-highlighter (MIT, © 2020 GV79). Фигуры схематичные: фото с других сайтов страница показать не может.</footer>
+</div>
+
+<script>
+const MUSCLES = {"front":[["CHEST",["51.8 41.6 51.0 55.1 57.9 57.9 67.7 55.5 70.6 47.3 62.0 41.6 ","29.7 46.5 31.4 55.5 40.8 57.9 48.1 55.1 47.7 42.0 37.5 42.0"]],["OBLIQUES",["68.5 63.2 67.3 57.1 58.7 59.5 60 64.0 60.4 83.2 65.7 78.7 66.5 69.7","33.8 78.3 33.0 71.8 31.0 63.2 32.2 57.1 40.8 59.1 39.1 63.2 39.1 83.6"]],["ABS",["56.3 59.1 57.9 64.0 58.3 77.9 58.3 92.6 56.3 98.3 55.1 104.0 51.4 107.7 51.0 84.4 50.6 67.3 51.0 57.1","43.6 58.7 48.5 57.1 48.9 67.3 48.5 84.4 48.1 107.3 44.4 103.6 40.8 91.4 40.8 78.3 41.2 64.4"]],["BICEPS",["16.7 68.1 17.9 71.4 22.8 66.1 28.9 53.8 27.7 49.3 20.4 55.9","71.4 49.3 70.2 54.6 76.3 66.1 81.6 71.8 82.8 68.9 78.7 55.5"]],["TRICEPS",["69.3 55.5 69.3 61.6 75.9 72.6 77.5 70.2 75.5 67.3","22.4 69.3 29.7 55.5 29.7 60.8 22.8 73.0"]],["NECK",["55.5 23.6 50.6 33.4 50.6 39.1 61.6 40 70.6 44.8 69.3 36.7 63.2 35.1 58.3 30.6","28.9 44.8 30.2 37.1 36.3 35.1 41.2 30.2 44.4 24.4 48.9 33.8 48.5 39.1 37.9 39.5"]],["FRONT_DELTOIDS",["78.3 53.0 79.5 47.7 79.1 41.2 75.9 37.9 71.0 36.3 72.2 42.8 71.4 47.3","28.1 47.3 21.2 53.0 20 47.7 20.4 40.8 24.4 37.1 28.5 37.1 26.9 43.2"]],["HEAD",["42.4 2.8 40 11.8 42.0 19.5 46.1 23.2 49.7 25.3 54.6 22.4 57.5 19.1 59.1 10.2 57.1 2.4 49.7 0"]],["ABDUCTORS",["52.6 110.2 54.2 124.8 60 110.2 62.0 100 64.8 94.2 60 92.6 56.7 104.4","47.7 110.6 44.8 125.3 42.0 115.9 40.4 113.0 39.5 107.3 37.9 102.4 34.6 93.8 39.5 92.2 41.6 99.1 43.6 105.3"]],["QUADRICEPS",["34.6 98.7 37.1 108.1 37.1 127.7 34.2 137.1 31.0 132.6 29.3 120 28.1 111.4 29.3 100.8 32.2 94.6","63.2 105.7 64.4 100 66.9 94.6 70.2 101.2 71.0 111.8 68.1 133.0 65.3 137.5 62.4 128.5 62.0 111.4","38.7 129.3 38.3 112.2 41.2 118.3 44.4 129.3 42.8 135.1 40 146.1 36.3 146.5 35.5 140","59.5 145.7 55.5 128.9 60.8 113.8 61.2 130.2 64.0 139.5 62.8 146.5","32.6 138.3 26.5 145.7 25.7 136.7 25.7 127.3 26.9 114.2 29.3 133.4","71.8 113.0 73.8 124.0 73.8 140.4 72.6 145.7 66.5 138.3 70.2 133.4"]],["KNEES",["33.8 140 34.6 143.2 35.5 147.3 36.3 151.0 35.1 156.7 29.7 156.7 27.3 152.6 27.3 147.3 30.2 144.0","65.7 140 72.2 147.7 72.2 152.2 69.7 157.1 64.8 156.7 62.8 151.0"]],["CALVES",["71.4 160.4 73.4 153.4 76.7 161.2 79.5 167.7 78.3 187.7 79.5 195.5 74.6 195.5","24.8 194.6 27.7 164.8 28.1 160.4 26.1 154.2 24.8 157.5 22.4 161.6 20.8 167.7 22.0 188.1 20.8 195.5","72.6 195.1 69.7 159.1 65.3 158.3 64.0 162.4 64.0 165.3 65.7 177.1","35.5 158.3 35.9 162.4 35.9 166.9 35.1 172.2 35.1 176.7 32.2 182.0 30.6 187.3 26.9 194.6 27.3 187.7 28.1 180.4 28.5 175.5 28.9 169.7 29.7 164.0 30.2 158.7"]],["FOREARM",["6.1 88.5 10.2 75.1 14.6 70.2 16.3 74.2 19.1 73.4 4.4 97.5 0 100","84.4 69.7 83.2 73.4 80 73.0 95.1 98.3 100 100.4 93.4 89.3 89.7 76.3","77.5 72.2 77.5 77.5 80.4 84.0 85.3 89.7 92.2 101.2 94.6 99.5","6.9 101.2 13.4 90.6 18.7 84.0 21.6 77.1 21.2 71.8 4.8 98.7"]]],"back":[["HEAD",["50.6 0 45.9 0.8 40.8 5.5 40.4 12.7 45.1 20 55.7 20 59.1 13.6 59.5 4.6 55.7 1.2"]],["TRAPEZIUS",["44.6 21.7 47.6 21.7 47.2 38.2 47.6 64.6 38.2 53.1 35.3 40.8 31.0 36.5 39.1 33.1 43.8 27.2","52.3 21.7 55.7 21.7 56.5 27.2 60.8 32.7 68.9 36.5 64.6 40.4 61.7 53.1 52.3 64.6 53.1 38.2"]],["BACK_DELTOIDS",["29.3 37.0 22.9 39.1 17.4 44.2 18.2 53.6 24.2 49.3 27.2 46.3","71.0 37.0 78.2 39.5 82.5 44.6 81.7 53.6 74.8 48.9 72.3 45.1"]],["UPPER_BACK",["31.0 38.7 28.0 48.9 28.5 55.3 34.0 75.3 47.2 71.0 47.2 66.3 36.5 54.0 33.6 41.2","68.9 38.7 71.9 49.3 71.4 56.1 65.9 75.3 52.7 71.0 52.7 66.3 63.4 54.4 66.3 41.7"]],["TRICEPS",["26.8 49.7 17.8 55.7 14.4 72.3 16.5 81.7 21.7 63.8 26.8 55.7","73.6 50.2 82.1 55.7 85.9 73.1 83.4 82.1 77.8 62.9 73.1 55.7","26.8 58.2 26.8 68.5 22.9 75.3 19.1 77.4 22.5 65.5","72.7 58.2 77.0 64.6 80.4 77.4 76.5 75.3 72.7 68.9"]],["LOWER_BACK",["47.6 72.7 34.4 77.0 35.3 83.4 49.3 102.1 46.8 82.9","52.3 72.7 65.5 77.0 64.6 83.4 50.6 102.1 53.1 83.8"]],["FOREARM",["86.3 75.7 91.0 83.4 93.1 94.0 100 106.3 96.1 104.2 88.0 89.3 84.2 83.8","13.6 75.7 8.9 83.8 6.8 93.6 0 106.3 3.8 104.2 12.3 88.5 15.7 82.9","81.2 79.5 77.4 77.8 79.1 84.6 91.0 103.8 93.1 108.9 94.4 104.6","18.7 79.5 22.1 77.8 20.8 84.2 9.3 102.9 6.8 108.5 5.1 104.6"]],["GLUTEAL",["44.6 99.5 30.2 108.5 29.7 118.7 31.4 125.9 47.2 121.2 49.3 114.8","55.3 99.1 51.0 114.4 52.3 120.8 68.0 125.9 69.7 119.1 69.3 108.5"]],["ABDUCTOR",["48.0 122.9 44.6 122.9 41.2 125.5 45.1 144.2 48.5 135.7 48.9 129.3","51.9 122.5 55.7 123.4 59.1 125.9 54.8 144.2 51.9 136.1 51.0 129.3"]],["HAMSTRING",["28.9 122.1 31.0 129.3 36.5 125.9 35.3 135.3 34.4 150.2 29.3 158.2 28.9 146.8 27.6 141.2 27.2 131.4","71.4 121.7 69.3 128.9 63.8 125.9 65.5 136.5 66.3 150.2 71.0 158.2 71.4 147.6 72.7 142.1 73.6 131.9","38.7 125.5 44.2 145.9 40.4 166.8 36.1 152.7 37.0 135.3","61.7 125.5 63.4 136.1 64.2 153.1 60 166.8 56.1 146.3"]],["KNEES",["34.4 153.1 31.0 159.1 33.6 166.3 37.4 162.5","66.3 153.6 62.9 162.9 66.8 166.3 69.3 159.1"]],["CALVES",["29.3 160.4 28.5 167.2 24.6 179.5 23.8 192.7 25.5 197.0 28.5 193.1 29.7 180 31.9 171.0 31.9 166.8","37.4 165.1 35.3 167.6 33.1 171.9 31.0 180.4 30.2 191.9 34.0 200 38.7 190.6 39.1 168.9","62.9 165.1 61.2 168.5 61.7 190.6 66.3 199.5 70.6 191.9 68.9 179.5 66.8 170.2","70.6 160.4 72.3 168.5 75.7 179.1 76.5 192.7 74.4 196.5 72.3 193.6 70.6 179.5 68.0 168.0"]],["LEFT_SOLEUS",["28.5 195.7 30.2 195.7 33.6 201.7 30.6 220 28.5 213.6 26.8 198.2"]],["RIGHT_SOLEUS",["69.7 195.7 71.9 195.7 73.6 198.2 71.9 213.1 70.2 219.5 67.2 202.1"]]]};
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+document.querySelectorAll("g[data-limbs]").forEach(g => {
+  const segs = g.dataset.limbs.split(";").map(s => s.trim().split(/\s+/).map(Number));
+  for (const pass of ["o", "s"]) for (const [x1, y1, x2, y2, w] of segs)
+    g.appendChild(el("line", { class: pass, x1, y1, x2, y2, "stroke-width": pass === "o" ? w + 4 : w }));
+});
+document.querySelectorAll("svg[data-map]").forEach(svg => {
+  const pick = k => (svg.dataset[k] || "").split(",").filter(Boolean);
+  const good = pick("good"), bad = pick("bad"), warn = pick("warn"), dim = pick("dim");
+  for (const [m, polys] of MUSCLES[svg.dataset.map]) {
+    const cls = m === "HEAD" ? "m-head" : good.includes(m) ? "m-good" : bad.includes(m) ? "m-bad" : warn.includes(m) ? "m-warn" : "m-base";
+    for (const p of polys) {
+      const poly = el("polygon", { points: p, class: cls });
+      if (dim.includes(m)) poly.setAttribute("opacity", "0.55");
+      svg.appendChild(poly);
+    }
+  }
+});
+</script>
+
+</body>
+</html>
